@@ -64,6 +64,16 @@ int main(int argc, char *argv[]) {
     }
 
     printf("host=%s, port=%d, mode=%s\n", host, port, mode);
+    if (strcmp(mode, "tcp") == 0){
+        //tcp_client(host, port);
+    }
+    else if (strcmp(mode, "udp") == 0){
+        printf("here\n");
+        udp_client(host, port);
+    }
+    else{
+        printf("Invalid mode. Please enter tcp or udp");
+    }
 
     return 0;
 }
