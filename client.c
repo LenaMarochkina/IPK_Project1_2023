@@ -32,7 +32,34 @@ void udp_client(const char* server_ip, int server_port) {
     server_addr.sin_addr.s_addr = inet_addr(server_ip);
     server_addr.sin_port = htons(server_port);
 
-void tcp()
+    // Prompt the user for a message
+    char message[BUF_SIZE];
+    printf("Enter a message: ");
+    fgets(message, BUF_SIZE, stdin);
+    printf("Message: %d\n", strlen(message));
+
+    // Send the message to the server
+    int len = sendto(sock, message, strlen(message), 0, (struct sockaddr *) &server_addr, sizeof(server_addr));
+    if (len < 0) {
+        perror("Failed to send message");
+        close(sock);
+        exit(1);
+    }
+
+    // Receive the server's response
+    char buffer[1024];
+    memset(buffer, 0, BUF_SIZE);
+    len = recvfrom(sock, buffer, BUF_SIZE, 0, NULL, NULL);
+    if (len < 0) {
+        perror("Failed to receive response");
+        close(sock);
+        exit(1);
+    }
+
+    printf("Received response: %s\n", buffer);
+
+    close(sock);
+}
 
 int main(int argc, char *argv[]) {
     int opt;
@@ -62,7 +89,6 @@ int main(int argc, char *argv[]) {
         fprintf(stderr, "Usage: %s -h host -p port -m mode\n", argv[0]);
         exit(EXIT_FAILURE);
     }
-
     printf("host=%s, port=%d, mode=%s\n", host, port, mode);
     if (strcmp(mode, "tcp") == 0){
         //tcp_client(host, port);
