@@ -1,6 +1,36 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <getopt.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+
+
+#define BUF_SIZE 1024
+
+//Function to send message to server and receive answer using TCP
+//void tcp_client(char *host, int port) {
+//}
+
+//Function to send message to server using UDP
+
+void udp_client(const char* server_ip, int server_port) {
+    // Create a UDP socket
+    // TODO: Change bite shift
+    int sock = socket(AF_INET, SOCK_DGRAM, 0);
+    if (sock < 0) {
+        perror("Failed to create socket");
+        exit(1);
+    }
+
+    // Set up the server address
+    struct sockaddr_in server_addr;
+    memset(&server_addr, 0, sizeof(server_addr));
+    server_addr.sin_family = AF_INET;
+    server_addr.sin_addr.s_addr = inet_addr(server_ip);
+    server_addr.sin_port = htons(server_port);
 
 void tcp()
 
