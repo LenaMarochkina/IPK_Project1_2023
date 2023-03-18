@@ -11,8 +11,56 @@
 #define BUF_SIZE 1024
 
 //Function to send message to server and receive answer using TCP
-//void tcp_client(char *host, int port) {
-//}
+void tcp_client(const char* server_ip, int server_port) {
+    int sockfd;
+    struct sockaddr_in server_addr;
+    char buffer[BUF_SIZE];
+
+    // Create a socket
+    sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    if (sockfd < 0) {
+        perror("socket");
+        exit(EXIT_FAILURE);
+    }
+
+    // Set server address
+    memset(&server_addr, 0, sizeof(server_addr));
+    server_addr.sin_family = AF_INET;
+    server_addr.sin_port = htons(server_port);
+    if (inet_pton(AF_INET, server_ip, &server_addr.sin_addr) <= 0) {
+        perror("inet_pton");
+        exit(EXIT_FAILURE);
+    }
+
+    // Connect to the server
+    if (connect(sockfd, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0) {
+        perror("connect");
+        exit(EXIT_FAILURE);
+    }
+
+
+    // Send a message to the server
+    while(strcmp(buffer, "BYE\n") != 0) {
+        bzero (buffer, BUF_SIZE);
+        fgets(buffer, BUF_SIZE, stdin);
+        if (send(sockfd, buffer, strlen(buffer), 0) < 0) {
+            perror("send");
+            exit(EXIT_FAILURE);
+        }
+
+        // Receive a response from the server
+        memset(buffer, 0, sizeof(buffer));
+        if (recv(sockfd, buffer, sizeof(buffer), 0) < 0) {
+            perror("recv");
+            exit(EXIT_FAILURE);
+        }
+
+        printf("Server response: %s\n", buffer);
+    }
+    // Close the socket
+    close(sockfd);
+
+}
 
 //Function to send message to server using UDP
 
