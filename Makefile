@@ -6,4 +6,3 @@ build:
 clean:
 	rm ipkcpc
 
-udp: build
