@@ -161,6 +161,21 @@ void sigint_handler(int signum) {
     if (strcmp(buffer, "") != 0) {
         bzero(buffer, BUF_SIZE);
     }
+
+    if (strcmp(MODE, "tcp") == 0) {
+        send(SOCKET, "BYE\n", strlen("BYE\n"), 0);
+        int len = recvfrom(SOCKET, buffer, BUF_SIZE, 0, NULL, NULL);
+        if (len < 0) {
+            perror("Failed to receive response");
+            close(SOCKET);
+            exit(1);
+        }
+        printf("%s\n", buffer);
+    }
+    //close socket
+    if (SOCKET != 0) {
+        close(SOCKET);
+    }
     fflush(stdout);
     exit(0);
 }
@@ -168,6 +183,8 @@ void sigint_handler(int signum) {
 int main(int argc, char *argv[]) {
     // Register signal handler
     signal(SIGINT, sigint_handler);
+
+    //check arguments
     int opt;
     char *host = NULL;
     int port = 0;
