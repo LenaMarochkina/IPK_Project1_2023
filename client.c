@@ -84,11 +84,13 @@ void udp_client(const char* server_ip, int server_port) {
         fgets(buffer, BUF_SIZE, stdin);
 
         //add \0 to the start of buffer
-        char new_buffer[] = "\0";
-        strcat(new_buffer, buffer);
-        printf("Sending message: %s\n", new_buffer);
+        char new_buffer[BUF_SIZE];
+        new_buffer[0] = 0;
+        new_buffer[1] = strlen(buffer);
+        memcpy(new_buffer + 2, buffer, strlen(buffer));
+
         // Send the message to the server
-        int len = sendto(sock, new_buffer, strlen(buffer), 0, (struct sockaddr *) &server_addr, sizeof(server_addr));
+        int len = sendto(sock, new_buffer, strlen(buffer) + 2, 0, (struct sockaddr *) &server_addr, sizeof(server_addr));
         if (len < 0) {
             perror("Failed to send message");
             close(sock);
@@ -96,8 +98,7 @@ void udp_client(const char* server_ip, int server_port) {
         }
 
         // Receive the server's response
-        char buffer[BUF_SIZE];
-        memset(buffer, 0, BUF_SIZE);
+        memset(buffer, 0, sizeof(buffer));
         len = recvfrom(sock, buffer, BUF_SIZE, 0, NULL, NULL);
         if (len < 0) {
             perror("Failed to receive response");
@@ -105,7 +106,13 @@ void udp_client(const char* server_ip, int server_port) {
             exit(1);
         }
 
-        printf("Received response: %s\n", buffer);
+        int status_code = (int) buffer[1];
+        if(status_code == 0){
+            printf("Received response: %s\n", buffer + 2);
+        } else {
+            exit(1);
+        }
+
     }
     close(sock);
 }
