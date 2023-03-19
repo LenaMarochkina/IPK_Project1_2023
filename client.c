@@ -10,7 +10,6 @@
 
 #define BUF_SIZE 1024
 
-
 //Function to send message to server and receive answer using TCP
 void tcp_client(const char* server_ip, int server_port) {
     int sockfd;
@@ -39,7 +38,6 @@ void tcp_client(const char* server_ip, int server_port) {
         exit(EXIT_FAILURE);
     }
 
-
     // Send a message to the server
     while(strcmp(buffer, "BYE\n") != 0) {
         bzero (buffer, BUF_SIZE);
@@ -63,8 +61,7 @@ void tcp_client(const char* server_ip, int server_port) {
 
 }
 
-//Function to send message to server using UDP
-
+//Function to send message to server and receive answer using UDP
 void udp_client(const char* server_ip, int server_port) {
     // Create a UDP socket
     int sock = socket(AF_INET, SOCK_DGRAM, 0);
@@ -85,6 +82,7 @@ void udp_client(const char* server_ip, int server_port) {
     while (strcmp(buffer, "BYE\n") != 0) {
         bzero (buffer, BUF_SIZE);
         fgets(buffer, BUF_SIZE, stdin);
+
         //add \0 to the start of buffer
         char new_buffer[] = "\0";
         strcat(new_buffer, buffer);
@@ -136,16 +134,17 @@ int main(int argc, char *argv[]) {
         }
     }
 
+    //check if all arguments are entered
     if (host == NULL || port == 0 || mode == NULL) {
         fprintf(stderr, "Usage: %s -h host -p port -m mode\n", argv[0]);
         exit(EXIT_FAILURE);
     }
-    printf("host=%s, port=%d, mode=%s\n", host, port, mode);
+
+    //check if mode is tcp or udp
     if (strcmp(mode, "tcp") == 0){
         tcp_client(host, port);
     }
     else if (strcmp(mode, "udp") == 0){
-        printf("here\n");
         udp_client(host, port);
     }
     else{
