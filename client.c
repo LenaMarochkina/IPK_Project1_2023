@@ -152,10 +152,26 @@ void udp_client(const char* server_ip, int server_port) {
         }
 
     }
-    close(sock);
+    close(SOCKET);
+}
+
+// Signal handler for SIGINT
+void sigint_handler(int signum) {
+    //close socket
+    if (SOCKET != -1) {
+        close(SOCKET);
+    }
+
+    //check if buffer is empty
+    if (strcmp(buffer, "") != 0) {
+        bzero(buffer, BUF_SIZE);
+    }
+    fflush(stdout);
+    exit(0);
 }
 
 int main(int argc, char *argv[]) {
+    signal(SIGINT, sigint_handler);
     int opt;
     char *host = NULL;
     int port = 0;
@@ -183,15 +199,7 @@ int main(int argc, char *argv[]) {
     create_socket(mode);
 
     //check if mode is tcp or udp
-    if (strcmp(mode, "tcp") == 0){
-        tcp_client(host, port);
-    }
-    else if (strcmp(mode, "udp") == 0){
-        udp_client(host, port);
-    }
-    else{
-        printf("Invalid mode. Please enter tcp or udp");
-    }
+    (strcmp(mode, "tcp") == 0) ? tcp_client(host, port) : udp_client(host, port);
 
     return 0;
 }
