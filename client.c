@@ -12,13 +12,14 @@
 
 //Global variables
 char buffer[BUF_SIZE];
-int SOCKET = -1;
+int SOCKET = 0;
+char *MODE;
 
 //Function to validate arguments
-void validate(char* host, int port, char* mode){
+void validate(char* host, int port){
 
     //check if all arguments are entered
-    if (host == NULL || port == 0 || mode == NULL) {
+    if (host == NULL || port == 0 || MODE == NULL) {
         fprintf(stderr, "Usage: %s -h host -p port -m mode\n");
         exit(EXIT_FAILURE);
     }
@@ -30,7 +31,7 @@ void validate(char* host, int port, char* mode){
     }
 
     //check if mode is valid
-    if (strcmp(mode, "tcp") != 0 && strcmp(mode, "udp") != 0) {
+    if (strcmp(MODE, "tcp") != 0 && strcmp(MODE, "udp") != 0) {
         fprintf(stderr, "Invalid mode. Please enter tcp or udp\n");
         exit(EXIT_FAILURE);
     }
@@ -45,17 +46,15 @@ void validate(char* host, int port, char* mode){
 }
 
 //Function to create socket
-void create_socket (char* mode) {
-
-    if (strcmp(mode, "tcp") == 0) {
+void create_socket () {
+    if (strcmp(MODE, "tcp") == 0) {
         SOCKET = socket(AF_INET, SOCK_STREAM, 0);
         if (SOCKET < 0) {
             perror("socket");
             exit(EXIT_FAILURE);
         }
-
     }
-    else if (strcmp(mode, "udp") == 0) {
+    else if (strcmp(MODE, "udp") == 0) {
         SOCKET = socket(AF_INET, SOCK_DGRAM, 0);
         if (SOCKET < 0) {
             perror("socket");
@@ -130,7 +129,7 @@ void udp_client(const char* server_ip, int server_port) {
         // Send the message to the server
         int len = sendto(SOCKET, new_buffer, strlen(buffer) + 2, 0, (struct sockaddr *) &server_addr, sizeof(server_addr));
         if (len < 0) {
-            perror("Failed to send message");
+            perror("ERR: Failed to send message");
             close(SOCKET);
             exit(1);
         }
@@ -139,16 +138,16 @@ void udp_client(const char* server_ip, int server_port) {
         memset(buffer, 0, sizeof(buffer));
         len = recvfrom(SOCKET, buffer, BUF_SIZE, 0, NULL, NULL);
         if (len < 0) {
-            perror("Failed to receive response");
+            perror("ERR: Failed to receive response");
             close(SOCKET);
             exit(1);
         }
 
         int status_code = (int) buffer[1];
         if(status_code == 0){
-            printf("%s\n", buffer + 2);
+            printf("OK: %s\n", buffer + 2);
         } else {
-            exit(1);
+            printf("ERR: Invalid expression\n");
         }
 
     }
@@ -157,10 +156,6 @@ void udp_client(const char* server_ip, int server_port) {
 
 // Signal handler for SIGINT
 void sigint_handler(int signum) {
-    //close socket
-    if (SOCKET != -1) {
-        close(SOCKET);
-    }
 
     //check if buffer is empty
     if (strcmp(buffer, "") != 0) {
@@ -171,11 +166,11 @@ void sigint_handler(int signum) {
 }
 
 int main(int argc, char *argv[]) {
+    // Register signal handler
     signal(SIGINT, sigint_handler);
     int opt;
     char *host = NULL;
     int port = 0;
-    char *mode = NULL;
 
     // parsing arguments from command line
     while ((opt = getopt(argc, argv, "h:p:m:")) != -1) {
@@ -187,7 +182,7 @@ int main(int argc, char *argv[]) {
                 port = atoi(optarg);
                 break;
             case 'm':
-                mode = optarg;
+                MODE = optarg;
                 break;
             default: /* '?' */
                 fprintf(stderr, "Usage: %s -h host -p port -m mode\n", argv[0]);
@@ -195,11 +190,9 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    validate(host, port, mode);
-    create_socket(mode);
-
-    //check if mode is tcp or udp
-    (strcmp(mode, "tcp") == 0) ? tcp_client(host, port) : udp_client(host, port);
+    validate(host, port);
+    create_socket();
+    (strcmp(MODE, "tcp") == 0) ? tcp_client(host, port) : udp_client(host, port);
 
     return 0;
 }
