@@ -162,8 +162,10 @@ void sigint_handler(int signum) {
         bzero(buffer, BUF_SIZE);
     }
 
+    //send BYE to server when user presses ctrl+c and TCP is used
     if (strcmp(MODE, "tcp") == 0) {
         send(SOCKET, "BYE\n", strlen("BYE\n"), 0);
+        printf("\nBYE\n");
         int len = recvfrom(SOCKET, buffer, BUF_SIZE, 0, NULL, NULL);
         if (len < 0) {
             perror("Failed to receive response");
@@ -172,6 +174,7 @@ void sigint_handler(int signum) {
         }
         printf("%s\n", buffer);
     }
+
     //close socket
     if (SOCKET != 0) {
         close(SOCKET);
