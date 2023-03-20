@@ -8,6 +8,7 @@
 #include <arpa/inet.h>
 #include <signal.h>
 
+
 #define BUF_SIZE 1024
 
 //Global variables
@@ -84,7 +85,7 @@ void tcp_client(const char* server_ip, int server_port) {
 
     // Send a message to the server
     while(strcmp(buffer, "BYE\n") != 0) {
-        bzero (buffer, BUF_SIZE);
+        memset(buffer, 0,BUF_SIZE);
         fgets(buffer, BUF_SIZE, stdin);
         if (send(SOCKET, buffer, strlen(buffer), 0) < 0) {
             perror("send");
@@ -105,6 +106,24 @@ void tcp_client(const char* server_ip, int server_port) {
 
 }
 
+//Function for timeout when using UDP
+void timeout(){
+    // set the timeout value for the select function
+    struct timeval timeout;
+    timeout.tv_sec = 5;   // 60 seconds
+    timeout.tv_usec = 0;
+
+    // monitor the socket for incoming data or timeout
+    fd_set read_fds;
+    FD_ZERO(&read_fds);
+    FD_SET(SOCKET, &read_fds);
+    int select_result = select(SOCKET+1, &read_fds, NULL, NULL, &timeout);
+    if (select_result == 0) {
+        printf("ERR: Timeout\n");
+        exit(1);
+    }
+}
+
 //Function to send message to server and receive answer using UDP
 void udp_client(const char* server_ip, int server_port) {
 
@@ -117,7 +136,7 @@ void udp_client(const char* server_ip, int server_port) {
 
     // Prompt the user for a message
     while (strcmp(buffer, "BYE\n") != 0) {
-        bzero (buffer, BUF_SIZE);
+        memset(buffer, 0, BUF_SIZE);
         fgets(buffer, BUF_SIZE, stdin);
 
         //add \0 to the start of buffer
@@ -149,6 +168,7 @@ void udp_client(const char* server_ip, int server_port) {
         } else {
             printf("ERR: Invalid expression\n");
         }
+        timeout();
 
     }
     close(SOCKET);
@@ -159,7 +179,7 @@ void sigint_handler(int signum) {
 
     //check if buffer is empty
     if (strcmp(buffer, "") != 0) {
-        bzero(buffer, BUF_SIZE);
+        memset(buffer, 0, BUF_SIZE);
     }
 
     //send BYE to server when user presses ctrl+c and TCP is used
