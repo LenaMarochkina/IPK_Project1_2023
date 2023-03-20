@@ -64,6 +64,26 @@ void create_socket () {
     }
 }
 
+
+//Function for timeout when using UDP
+void timeout(){
+    // set the timeout value for the select function
+    struct timeval timeout;
+    timeout.tv_sec = 60;   // 60 seconds
+    timeout.tv_usec = 0;
+
+    // monitor the socket for incoming data or timeout
+    fd_set read_fds;
+    FD_ZERO(&read_fds);
+    FD_SET(SOCKET, &read_fds);
+    int select_result = select(SOCKET+1, &read_fds, NULL, NULL, &timeout);
+    if (select_result == 0) {
+        printf("ERR: Timeout\n");
+        close(SOCKET);
+        exit(1);
+    }
+}
+
 //Function to send message to server and receive answer using TCP
 void tcp_client(const char* server_ip, int server_port) {
     struct sockaddr_in server_addr;
@@ -94,6 +114,7 @@ void tcp_client(const char* server_ip, int server_port) {
 
         // Receive a response from the server
         memset(buffer, 0, sizeof(buffer));
+        timeout();
         if (recv(SOCKET, buffer, sizeof(buffer), 0) < 0) {
             perror("recv");
             exit(EXIT_FAILURE);
@@ -104,24 +125,6 @@ void tcp_client(const char* server_ip, int server_port) {
     // Close the socket
     close(SOCKET);
 
-}
-
-//Function for timeout when using UDP
-void timeout(){
-    // set the timeout value for the select function
-    struct timeval timeout;
-    timeout.tv_sec = 5;   // 60 seconds
-    timeout.tv_usec = 0;
-
-    // monitor the socket for incoming data or timeout
-    fd_set read_fds;
-    FD_ZERO(&read_fds);
-    FD_SET(SOCKET, &read_fds);
-    int select_result = select(SOCKET+1, &read_fds, NULL, NULL, &timeout);
-    if (select_result == 0) {
-        printf("ERR: Timeout\n");
-        exit(1);
-    }
 }
 
 //Function to send message to server and receive answer using UDP
@@ -135,7 +138,7 @@ void udp_client(const char* server_ip, int server_port) {
     server_addr.sin_port = htons(server_port);
 
     // Prompt the user for a message
-    while (strcmp(buffer, "BYE\n") != 0) {
+    while (1) {
         memset(buffer, 0, BUF_SIZE);
         fgets(buffer, BUF_SIZE, stdin);
 
@@ -155,6 +158,7 @@ void udp_client(const char* server_ip, int server_port) {
 
         // Receive the server's response
         memset(buffer, 0, sizeof(buffer));
+        timeout();
         len = recvfrom(SOCKET, buffer, BUF_SIZE, 0, NULL, NULL);
         if (len < 0) {
             perror("ERR: Failed to receive response");
@@ -168,10 +172,7 @@ void udp_client(const char* server_ip, int server_port) {
         } else {
             printf("ERR: Invalid expression\n");
         }
-        timeout();
-
     }
-    close(SOCKET);
 }
 
 // Signal handler for SIGINT
