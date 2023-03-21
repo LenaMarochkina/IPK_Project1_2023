@@ -170,13 +170,20 @@ function with host and port as arguments to create a client connection.
 The main function returns 0 to indicate successful execution of the program.
 
 ## Testing
+### Testing validation
+The program was tested on the FIT VUT Linux server using the following commands:
+
+![IMAGE_DESCRIPTION](./Testing_pics/Validation_1.png)
+
 ### Testing for TCP client
 The program was tested on the FIT VUT Linux server using the following commands:
+
 ![IMAGE_DESCRIPTION](./Testing_pics/TSP_1.png)
 ![IMAGE_DESCRIPTION](./Testing_pics/TSP_2.png)
 
 ### Testing for UDP client
 The program was tested on the FIT VUT Linux server using the following commands:
+
 ![IMAGE_DESCRIPTION](./Testing_pics/UDP_1.png)
 
 # License
