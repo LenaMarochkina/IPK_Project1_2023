@@ -5,7 +5,7 @@
 **Supported OS**: Linux\
 **Gitea**: [xmaroc00](https://gitlab.fit.cvut.cz/emarochk/ipk-proj1)
 
-#Table of Contents
+# Table of Contents
 1. [Description](#description)
    1. [Compilation](#compilation)
    2. [Usage](#usage)
@@ -186,8 +186,8 @@ file for details.
 
 ## Bibliography
 
-1. [sys/socket.h](https://pubs.opengroup.org/onlinepubs/7908799/xns/syssocket.h.html)
+1. [Open Group Library](https://pubs.opengroup.org/)
 2. [netinet/in.h](https://pubs.opengroup.org/onlinepubs/7908799/xns/netinetin.h.html)
 3. [arpa/inet.h](https://pubs.opengroup.org/onlinepubs/7908799/xns/arpainet.h.html)
-4. [NESFIT - Stubs](https://git.fit.vutbr.cz/NESFIT/IPK-Projekty/src/branch/master/Stubs)
+4. [NESFIT - IPK-Projekty - Stubs](https://git.fit.vutbr.cz/NESFIT/IPK-Projekty/src/branch/master/Stubs)
 5. [Wikipedia: Markdown](http://wikipedia.org/wiki/Markdown)
