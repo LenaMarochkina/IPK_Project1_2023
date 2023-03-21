@@ -195,5 +195,5 @@ file for details.
 
 1. [Open Group Library](https://pubs.opengroup.org/)
 2. [NESFIT - IPK-Projekty - Stubs](https://git.fit.vutbr.cz/NESFIT/IPK-Projekty/src/branch/master/Stubs)
-3. [Stack Overflow](https://stackoverflow.com/questions/4217037/catch-sigint-signals-in-c
+3. [Stack Overflow](https://stackoverflow.com/questions/4217037/catch-sigint-signals-in-c)
 4. [Wikipedia: Markdown](http://wikipedia.org/wiki/Markdown)
