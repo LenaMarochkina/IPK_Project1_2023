@@ -18,6 +18,7 @@
    1. [Testing the TCP client](#testing-the-tcp-client)
    2. [Testing the UDP client](#testing-the-udp-client)
 3. [License](#license)
+4. [Bibliography](#bibliography)
 
 ## Description
 
@@ -183,10 +184,10 @@ This project is licensed under the GNU General Public License - see the
 [LICENSE](https://git.fit.vutbr.cz/xmaroc00/IPK_Project1_2023/src/branch/master/LICENSE.md)
 file for details.
 
-## References
+## Bibliography
 
-1. [sys/socket.h - Internet Protocol family](https://pubs.opengroup.org/onlinepubs/7908799/xns/syssocket.h.html)
-2. [netinet/in.h - Internet Protocol family](https://pubs.opengroup.org/onlinepubs/7908799/xns/netinetin.h.html)
-3. [arpa/inet.h - Internet Protocol family](https://pubs.opengroup.org/onlinepubs/7908799/xns/arpainet.h.html)
+1. [sys/socket.h](https://pubs.opengroup.org/onlinepubs/7908799/xns/syssocket.h.html)
+2. [netinet/in.h](https://pubs.opengroup.org/onlinepubs/7908799/xns/netinetin.h.html)
+3. [arpa/inet.h](https://pubs.opengroup.org/onlinepubs/7908799/xns/arpainet.h.html)
 4. [NESFIT - Stubs](https://git.fit.vutbr.cz/NESFIT/IPK-Projekty/src/branch/master/Stubs)
 5. [Wikipedia: Markdown](http://wikipedia.org/wiki/Markdown)
