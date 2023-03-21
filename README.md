@@ -28,7 +28,7 @@ IPKCP is an application protocol for communicating with an Arithmetic as a Servi
 
 ## Compilation
 ### Linux
-Before using the client, you need to compile the client.c file.\
+Before using the client, you need to compile the client.c file.
 
 To compile the client.c file, you can run **make build**, and to remove the ipkcpc executable 
 file, you can run **make clean**.
@@ -39,8 +39,8 @@ The program can be compiled for Windows.
 ## Usage
 The client application requires three arguments to run:
 
-- **-h host**: specifies the hostname of the server to connect to.\
-- **-p port**: specifies the port number of the server to connect to.\
+- **-h host**: specifies the hostname of the server to connect to.
+- **-p port**: specifies the port number of the server to connect to.
 - **-m mode**: specifies the protocol to use for communication, either tcp or udp.
 
 
@@ -70,67 +70,76 @@ The code uses the following libraries:
 ## Defined functions
 
 1. **void validate(char\* host, int port)** - function to validate the command-line
-   arguments.\
+   arguments.
 
 *Input Parameters*
 - host - a character pointer to the server hostname.
-- port - an integer to the server port number.\
+- port - an integer to the server port number.
 
 *Output*
-- The function doesn't return anything, but it terminates the program with an error message if any of the arguments is invalid.
+- The function doesn't return anything, but it terminates the program with an error message 
+if any of the arguments is invalid.
 
-2. **void create_socket()** - function to create a socket and connect to the server.\
+2. **void create_socket()** - function to create a socket and connect to the server.
 
 *Input Parameters*
-- MODE - a character pointer to the communication protocol mode.\
-- SOCKET - an integer to the socket file descriptor.\
+- MODE - a character pointer to the communication protocol mode.
+- SOCKET - an integer to the socket file descriptor.
   
 *Output*
-- The function doesn't return anything, but it creates a TCP socket using the socket function with the AF_INET domain, SOCK_STREAM type, and protocol value of 0 or
-  a UDP socket using the socket function with the AF_INET domain, SOCK_DGRAM type, and protocol value of 0.
-- If the socket creation fails for either case, the function prints an error message using the perror function and exits the program with a failure status code using the exit function
+- The function doesn't return anything, but it creates a TCP socket using the socket function 
+with the AF_INET domain, SOCK_STREAM type, and protocol value of 0 or
+  a UDP socket using the socket function with the AF_INET domain, SOCK_DGRAM type, and protocol
+value of 0.
+- If the socket creation fails for either case, the function prints an error message using 
+the perror function and exits the program with a failure status code using the exit function
 
-3. **void timeout()** - function to set a timeout value for the select() function when using UDP or TCP.\
+3. **void timeout()** - function to set a timeout value for the select() function when 
+using UDP or TCP.
 
 *Input Parameters*
-- SOCKET - an integer to the socket file descriptor.\
+- SOCKET - an integer to the socket file descriptor.
 
 *Output*
-- The function doesn't return anything, but it sets the timeout to 60 seconds and waits for incoming data on the socket using the select() function.
+- The function doesn't return anything, but it sets the timeout to 60 seconds and waits for 
+- incoming data on the socket using the select() function.
   If no data is received within the timeout period, it prints an error message and exits
   the program.
 
-4.**void tcp_client(char\* host, int port)** - function to communicate with the server using TCP.\
+4.**void tcp_client(char\* host, int port)** - function to communicate with the server using TCP.
 
 *Input Parameters*
 - host - a character pointer to the server hostname.
-- port - an integer to the server port number.\
+- port - an integer to the server port number.
 
 *Output*
-- The function doesn't return anything, but it connects to the server using the connect() function and sends a message to the server using the send() function.\
+- The function doesn't return anything, but it connects to the server using the connect() 
+function and sends a message to the server using the send() function.\
   It then waits for a response from the server using the recv() function and prints the
-  response to the console.\
-This loop continues until the user types "BYE\n". Finally, it closes the socket using the close() function.
+  response to the console.
+This loop continues until the user types "BYE\n". Finally, it closes the socket using the 
+close() function.
 
-5. **void udp_client(const char\* server_ip, int server_port)** - function to communicate with the server using UDP.\
+5. **void udp_client(const char\* server_ip, int server_port)** - function to communicate with the server using UDP.
 
 *Input Parameters*
 - host - a character pointer to the server hostname.
-- port - an integer to the server port number.\
+- port - an integer to the server port number.
 
 *Output*
-- The function doesn't return anything, but it sends a message to the server using the sendto() function and waits for a response from the server using the recvfrom() function.\
+- The function doesn't return anything, but it sends a message to the server using the sendto()
+function and waits for a response from the server using the recvfrom() function.\
   This loop continues until the user terminates the program with Ctrl-C.\
   Finally, it closes the socket using the close() function.
 
-6. **void sigint_handler(int signum)** - function to handle the SIGINT signal.\
+6. **void sigint_handler(int signum)** - function to handle the SIGINT signal.
 
 *Input Parameters*
-- signum - an integer to the signal number.\
+- signum - an integer to the signal number.
 
-- *Output*
+*Output*
 - The function doesn't return anything, but it checks if the buffer is not empty, 
-it clears the buffer using the memset function .\
+it clears the buffer using the memset function.\
 If the MODE is "tcp", it sends the string "BYE\n" and waits for a response from the
 server using the recvfrom function. \
 Finally, the function closes the socket using the close function and exits the program 
@@ -162,12 +171,12 @@ The main function returns 0 to indicate successful execution of the program.
 ## Testing
 ### Testing for TCP client
 The program was tested on the FIT VUT Linux server using the following commands:
-[IMAGE_DESCRIPTION](https://git.fit.vutbr.cz/xmaroc00/IPK_Project1_2023/src/branch/master/TSP_1.png)
-[IMAGE_DESCRIPTION](https://git.fit.vutbr.cz/xmaroc00/IPK_Project1_2023/src/branch/master/TSP_2.png)
+![IMAGE_DESCRIPTION](./Testing_pics/TSP_1.png)
+![IMAGE_DESCRIPTION](./Testing_pics/TSP_2.png)
 
 ### Testing for UDP client
 The program was tested on the FIT VUT Linux server using the following commands:
-[IMAGE_DESCRIPTION](https://git.fit.vutbr.cz/xmaroc00/IPK_Project1_2023/src/branch/master/UDP_1.png)
+![IMAGE_DESCRIPTION](./Testing_pics/UDP_1.png)
 
 # License
 This project is licensed under the GNU General Public License - see the 
