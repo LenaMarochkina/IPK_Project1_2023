@@ -31,6 +31,16 @@ getopt() function, calls the validate() and create_socket() functions, and then 
 the tcp_client() or udp_client() function depending on the specified mode.
 
 # Known Limitations
-- The program does not handle errors from the server
-- UDP messages larger than 1024 bytes will be truncated
-- The program does not run on Windows
+- Limited error handling: While the program does check for some invalid inputs and errors, 
+such as invalid port numbers and host names, it does not handle all possible errors that 
+could occur during runtime. For example, if the server is not running or if the connection 
+is lost during the communication process, the program will terminate abruptly without 
+providing a clear error message.
+- Limited functionality: The program is designed to send and receive messages from a 
+server using either TCP or UDP protocols. It does not provide any other functionality, 
+such as file transfers or remote execution of commands.
+- Limited platform compatibility: The program is written in C and relies on standard 
+system libraries for socket communication. This means that it may not be compatible 
+with all platforms or operating systems, especially those with non-standard networking 
+stacks.
+- Messages larger than 1024 bytes will be truncated
