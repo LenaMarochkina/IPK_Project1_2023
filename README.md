@@ -187,7 +187,6 @@ file for details.
 ## Bibliography
 
 1. [Open Group Library](https://pubs.opengroup.org/)
-2. [netinet/in.h](https://pubs.opengroup.org/onlinepubs/7908799/xns/netinetin.h.html)
-3. [arpa/inet.h](https://pubs.opengroup.org/onlinepubs/7908799/xns/arpainet.h.html)
-4. [NESFIT - IPK-Projekty - Stubs](https://git.fit.vutbr.cz/NESFIT/IPK-Projekty/src/branch/master/Stubs)
-5. [Wikipedia: Markdown](http://wikipedia.org/wiki/Markdown)
+2. [NESFIT - IPK-Projekty - Stubs](https://git.fit.vutbr.cz/NESFIT/IPK-Projekty/src/branch/master/Stubs)
+3. [Stack Overflow](https://stackoverflow.com/questions/4217037/catch-sigint-signals-in-c
+4. [Wikipedia: Markdown](http://wikipedia.org/wiki/Markdown)
